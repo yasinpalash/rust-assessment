@@ -1,0 +1,23 @@
+{
+    "monitors": [
+        {
+            "name": "Custom Monitor - 1",
+            "script": "scripts/disk.sh",
+            "result": null,
+            "code": "b876488e681f4b4789acee05fc3fd5d4"
+        },
+        {
+            "monitor_id": 467,
+            "name": "Local Monitor - 1",
+            "type": "cpu",
+            "result": null,
+            "code": "cc07e0296ec32cb904ccc162682e36fe"
+        },
+        {
+            "monitor_id": 468,
+            "name": "Local Monitor - 2",
+            "script": "scripts/mem.sh",
+            "code": "9f0d2fc5dec3f5e604747caf0704b402"
+        }
+    ]
+}
