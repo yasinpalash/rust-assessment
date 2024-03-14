@@ -1,13 +1,13 @@
-use serde::{Serialize, Deserialize};
+use clap::{App, Arg};
+use serde::{Deserialize, Serialize};
 use serde_json;
-use std::env;
 use std::fs::File;
 use std::io::{Read, Write};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct ResultData {
-    value: Option<i32>, 
+    value: Option<i32>,
     processed_at: i64,
 }
 
@@ -15,7 +15,7 @@ struct ResultData {
 struct Monitor {
     name: String,
     monitor_id: Option<u32>,
-    script: Option<String>, 
+    script: Option<String>,
     result: Option<ResultData>,
     code: String,
 }
@@ -25,7 +25,7 @@ struct Monitors {
     monitors: Vec<Monitor>,
 }
 
-fn read_monitors_from_json(file_path: &str) -> Result<Monitors, Box<dyn std::error::Error>> {
+fn monitors_from_json(file_path: &str) -> Result<Monitors, Box<dyn std::error::Error>> {
     let mut file = File::open(file_path)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
@@ -36,7 +36,7 @@ fn read_monitors_from_json(file_path: &str) -> Result<Monitors, Box<dyn std::err
     Ok(monitors)
 }
 
-fn generate_random_result() -> Result<Option<ResultData>, Box<dyn std::error::Error>> {
+fn random_result() -> Result<Option<ResultData>, Box<dyn std::error::Error>> {
     let value = Some(rand::random::<i32>());
     let processed_at = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -47,30 +47,35 @@ fn generate_random_result() -> Result<Option<ResultData>, Box<dyn std::error::Er
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let args: Vec<String> = env::args().collect();
+    let matches = App::new("process_monitor")
+        .arg(
+            Arg::with_name("monitorFile")
+                .short('m')
+                .long("monitorFile")
+                .value_name("FILE")
+                .help("Sets the path to the monitors JSON file")
+                .takes_value(true)
+                .required(true),
+        )
+        .get_matches();
 
-    if args.len() < 2 {
-        eprintln!("Usage: {} <path/to/monitors.json>", args[0]);
-        std::process::exit(1);
-    }
+    let monitor_file_path = matches.value_of("monitorFile").unwrap();
 
-    let monitor_file_path = &args[1];
-
-    let mut monitors = read_monitors_from_json(monitor_file_path)?;
+    let mut monitors = monitors_from_json(monitor_file_path)?;
 
     for monitor in monitors.monitors.iter_mut() {
-        monitor.result = generate_random_result()?;
+        monitor.result = random_result()?;
     }
 
     let json_string = serde_json::to_string_pretty(&monitors)?;
 
     println!("Updated JSON:\n{}", json_string);
 
-    let output_file_path = "D:/rust-assessment/process_monitor/forwrite/back.json"; 
+    let output_file_path = "D:/rust-assessment/process_monitor/forwrite/back.json";
     let mut output_file = File::create(output_file_path)?;
     output_file.write_all(json_string.as_bytes())?;
 
-    println!("Write Json : {}", output_file_path);
+    println!("Write : {}", output_file_path);
 
     Ok(())
 }

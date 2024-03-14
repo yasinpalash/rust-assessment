@@ -5,8 +5,8 @@
       "monitor_id": null,
       "script": "scripts/disk.sh",
       "result": {
-        "value": -2040260991,
-        "processed_at": 1710323148
+        "value": -41254709,
+        "processed_at": 1710388608
       },
       "code": "b876488e681f4b4789acee05fc3fd5d4"
     },
@@ -15,8 +15,8 @@
       "monitor_id": 467,
       "script": null,
       "result": {
-        "value": -1614305234,
-        "processed_at": 1710323148
+        "value": -458205437,
+        "processed_at": 1710388608
       },
       "code": "cc07e0296ec32cb904ccc162682e36fe"
     },
@@ -25,8 +25,8 @@
       "monitor_id": 468,
       "script": "scripts/mem.sh",
       "result": {
-        "value": 1458305710,
-        "processed_at": 1710323148
+        "value": 45947998,
+        "processed_at": 1710388608
       },
       "code": "9f0d2fc5dec3f5e604747caf0704b402"
     }
